@@ -12,7 +12,7 @@ def login_user(user):
         json string: If the user was found will return valid boolean of True and the user's id as the token
                      If the user was not found will return valid boolean False
     """
-    with sqlite3.connect('./db.sqlite3') as conn:
+    with sqlite3.connect('./rare.sqlite3') as conn:
         conn.row_factory = sqlite3.Row
         db_cursor = conn.cursor()
 
@@ -47,7 +47,7 @@ def create_user(user):
     Returns:
         json string: Contains the token of the newly created user
     """
-    with sqlite3.connect('./db.sqlite3') as conn:
+    with sqlite3.connect('./rare.sqlite3') as conn:
         conn.row_factory = sqlite3.Row
         db_cursor = conn.cursor()
 
