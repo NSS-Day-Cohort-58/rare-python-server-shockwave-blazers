@@ -83,10 +83,42 @@ CREATE TABLE "Categories" (
   "id" INTEGER PRIMARY KEY AUTOINCREMENT,
   "label" varchar
 );
-INSERT INTO `Subscriptions` VALUES(null, 2, 2, 1992);
-SELECT
-            s.id,
-            s.follower_id,
-            s.author_id,
-            s.created_on
-        FROM Subscriptions s;
+INSERT INTO `Users` VALUES(null, "Walter", "White", "whw@gmail.com", "I am the one who knocks.", "Heisenberg", "ihateskyler", null, 2022, 1);
+INSERT INTO `Users` VALUES(null, "Ricky", "Bobby", "rbob@wonderbread.com", "If you ain't first you're last.", "magicman", "iwannagofast", null, 2022, 1);
+
+
+INSERT INTO `Subscriptions` VALUES(null, 1, 2, 2022);
+INSERT INTO `Subscriptions` VALUES(null, 2, 2, 2020);
+
+INSERT INTO `Posts` VALUES(null, 1, 2, "Test", 2022, null, "hello world", 1);
+
+INSERT INTO `Comments` VALUES(null, 1, 2, "Test");
+
+INSERT INTO `Reactions` VALUES(null, "🔥");
+INSERT INTO `Reactions` VALUES(null, "😂");
+INSERT INTO `Reactions` VALUES(null, "💯");
+INSERT INTO `Reactions` VALUES(null, "💩");
+INSERT INTO `Reactions` VALUES(null, "💜");
+
+INSERT INTO `PostReactions` VALUES(null, 1, 2, 1);
+INSERT INTO `PostReactions` VALUES(null, 2, 1, 2);
+
+
+INSERT INTO `Tags` VALUES(null, "Happy");
+INSERT INTO `Tags` VALUES(null, "Sad");
+INSERT INTO `Tags` VALUES(null, "Motivated");
+INSERT INTO `Tags` VALUES(null, "Inspired");
+INSERT INTO `Tags` VALUES(null, "Mad");
+
+
+INSERT INTO `PostTags` VALUES(null, 1, 2);
+INSERT INTO `PostTags` VALUES(null, 2, 1);
+
+
+INSERT INTO `Categories` VALUES(null, "Sports");
+INSERT INTO `Categories` VALUES(null, "Technology");
+INSERT INTO `Categories` VALUES(null, "Medicine");
+INSERT INTO `Categories` VALUES(null, "Weather");
+INSERT INTO `Categories` VALUES(null, "Current Events");
+
+
