@@ -61,7 +61,7 @@ def get_single_category(id):
         category = Category(data['id'], data['label'])
 
         return json.dumps(category.__dict__)
-    
+
 def create_category(new_category):
     with sqlite3.connect("./rare.sqlite3") as conn:
         db_cursor = conn.cursor()
