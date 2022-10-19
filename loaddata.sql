@@ -53,8 +53,7 @@ CREATE TABLE "Comments" (
 
 CREATE TABLE "Reactions" (
   "id" INTEGER PRIMARY KEY AUTOINCREMENT,
-  "label" varchar,
-  "image_url" varchar
+  "emoji" varchar
 );
 
 CREATE TABLE "PostReactions" (
