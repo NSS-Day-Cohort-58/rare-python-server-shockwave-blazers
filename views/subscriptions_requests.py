@@ -1,6 +1,6 @@
 import sqlite3
 import json
-
+from models import Subscription
 SUBSCRIPTIONS = [
     {
         "id":1,
