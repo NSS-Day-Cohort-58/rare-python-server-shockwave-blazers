@@ -84,3 +84,10 @@ CREATE TABLE "Categories" (
   "id" INTEGER PRIMARY KEY AUTOINCREMENT,
   "label" varchar
 );
+INSERT INTO `Subscriptions` VALUES(null, 2, 2, 1992);
+SELECT
+            s.id,
+            s.follower_id,
+            s.author_id,
+            s.created_on
+        FROM Subscriptions s;
