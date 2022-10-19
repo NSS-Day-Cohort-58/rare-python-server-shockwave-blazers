@@ -26,7 +26,7 @@ def get_all_subscriptions():
             s.follower_id,
             s.author_id,
             s.created_on
-        FROM Subscription s
+        FROM Subscriptions s
         """)
         subscriptions = []
 
@@ -37,7 +37,7 @@ def get_all_subscriptions():
 
             subscriptions.append(subscription.__dict__)
 
-        return json.dumps(subscriptions)
+    return json.dumps(subscriptions)
 
 def get_single_subscription(id):
     with sqlite3.connect("./rare.sqlite3") as conn:
@@ -52,7 +52,7 @@ def get_single_subscription(id):
             s.follower_id,
             s.author_id,
             s.created_on
-        FROM Subscription s
+        FROM Subscriptions s
         WHERE s.id = ?
         """, ( id, ))
 
@@ -82,7 +82,7 @@ def update_subscription(id, new_subscription):
             SET
                 follower_id = ?,
                 author_id = ?,
-                created_on = ?,
+                created_on = ?
         WHERE id = ?
         """, (new_subscription['follower_id'], new_subscription['author_id'],new_subscription['created_on'],id, ))
 
