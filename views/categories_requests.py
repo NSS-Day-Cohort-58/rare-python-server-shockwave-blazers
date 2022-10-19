@@ -14,8 +14,8 @@ def get_all_categories():
         db_cursor.execute("""
         SELECT
             c.id,
-            c.label    
-        FROM categories a
+            c.label
+        FROM categories c
         """)
 
         # Initialize an empty list to hold all order representations
@@ -32,7 +32,7 @@ def get_all_categories():
             # exact order of the parameters defined in the
             # order class above.
             category = Category(row['id'], row['label'])
-            
+
 
             categories.append(category.__dict__)
 
@@ -49,9 +49,9 @@ def get_single_category(id):
         db_cursor.execute("""
         SELECT
             c.id,
-            c.label    
-        FROM categories a
-        WHERE a.id = ?
+            c.label
+        FROM categories c
+        WHERE c.id = ?
         """, ( id, ))
 
         # Load the single result into memory
