@@ -1,5 +1,9 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
+from views.categories_requests import create_category, delete_category, get_all_categories, get_single_category, update_category
+from views.post_requests import create_post, delete_post, get_all_posts, get_single_post, update_post
+from views.reaction_requests import get_all_reactions
+from views.subscriptions_requests import delete_subscription, get_all_subscriptions, get_single_subscription, update_subscription
 
 from views.user import create_user, login_user
 
@@ -51,8 +55,41 @@ class HandleRequests(BaseHTTPRequestHandler):
 
     def do_GET(self):
         """Handle Get requests to the server"""
-        pass
+        # Set the response code to 'Ok'
+        self._set_headers(200)
+        response = {}  # Default response
 
+        # Parse URL and store entire tuple in a variable
+        resource, id = self.parse_url()
+        if resource == "posts":
+            if id is not None:
+                response = get_single_post(id)
+
+            else:
+                response = get_all_posts()
+
+        elif resource == "categories":
+            if id is not None:
+                response = get_single_category(id)
+
+            else:
+                response = get_all_categories()
+
+        elif resource == "subscriptions":
+            if id is not None:
+                response = get_single_subscription(id)
+
+            else:
+                response = get_all_subscriptions()
+
+        elif resource == "reactions":
+            if id is not None:
+                response = ""
+
+            else:
+                response = get_all_reactions()
+
+        self.wfile.write(response.encode())
 
     def do_POST(self):
         """Make a post request to the server"""
@@ -61,6 +98,7 @@ class HandleRequests(BaseHTTPRequestHandler):
         post_body = json.loads(self.rfile.read(content_len))
         response = ''
         resource, _ = self.parse_url()
+        new_thing = None
 
         if resource == 'login':
             response = login_user(post_body)
@@ -69,13 +107,65 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         self.wfile.write(response.encode())
 
+        if resource == "posts":
+            new_thing = create_post(post_body)
+
+        if resource == "category":
+            new_thing = create_category(post_body)
+
+        # Encode the new thing and send in response
+        self.wfile.write(json.dumps(new_thing).encode())
+
     def do_PUT(self):
         """Handles PUT requests to the server"""
-        pass
+        content_len = int(self.headers.get('content-length', 0))
+        post_body = self.rfile.read(content_len)
+        post_body = json.loads(post_body)
+
+    # Parse the URL
+        (resource, id) = self.parse_url(self.path)
+
+        success = False
+
+        if resource == "posts":
+            success = update_post(id, post_body)
+
+    # rest of the elif's
+        elif resource == "subscriptions":
+            success = update_subscription(id, post_body)
+
+        elif resource == "categories":
+            success = update_category(id, post_body)
+
+        if success:
+            self._set_headers(204)
+        else:
+            self._set_headers(404)
+
+        self.wfile.write("".encode())
 
     def do_DELETE(self):
         """Handle DELETE Requests"""
-        pass
+        # Set a 204 response code
+        self._set_headers(204)
+
+    # Parse the URL
+        (resource, id) = self.parse_url(self.path)
+
+    # Delete a single post from the list
+        if resource == "posts":
+            delete_post(id)
+
+        if resource == "subscription":
+            delete_subscription(id)
+
+        if resource == "category":
+            delete_category(id)
+
+        if resource == "user":
+            self._set_headers(405)
+
+        self.wfile.write("".encode())
 
 
 def main():
