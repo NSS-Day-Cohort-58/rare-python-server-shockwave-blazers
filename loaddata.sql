@@ -122,3 +122,39 @@ INSERT INTO `Categories` VALUES(null, "Weather");
 INSERT INTO `Categories` VALUES(null, "Current Events");
 
 
+        SELECT
+            p.id,
+            p.user_id,
+            p.category_id ,
+            p.title ,
+            p.publication_date ,
+            p.image_url ,
+            p.content ,
+            p.approved,
+            c.label,
+            u.first_name,
+            u.last_name,
+            u.email,
+            u.bio,
+            u.username,
+            u.password,
+            u.profile_image_url,
+            u.created_on,
+            u.active,
+            r.emoji,
+            t.label tag_label
+        FROM Posts p
+        JOIN Categories c
+            ON c.id = p.category_id
+        JOIN Users u
+            ON u.id = p.user_id
+        JOIN PostReactions pr
+            ON p.id = pr.post_id
+        JOIN Reactions r
+            ON pr.reaction_id = r.id
+        JOIN PostTags pt
+            ON p.id = pt.post_id
+        JOIN Tags t
+            ON pt.tag_id = t.id
+
+
