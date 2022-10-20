@@ -2,6 +2,7 @@ import sqlite3
 import json
 from models import Comment
 from models import Post
+from models import User
 
 
 def get_all_comments():
@@ -26,10 +27,21 @@ def get_all_comments():
             p.publication_date,
             p.image_url,
             p.content,
-            p.approved
+            p.approved,
+            u.first_name,
+            u.last_name,
+            u.email,
+            u.bio,
+            u.username,
+            u.password,
+            u.profile_image_url,
+            u.created_on,
+            u.active
         FROM comments c
         JOIN Posts p
             ON p.id = c.post_id
+        JOIN Users u
+            On u.id = c.author_id
         """
         )
 
@@ -61,7 +73,21 @@ def get_all_comments():
                 row["approved"],
             )
 
+            user = User(
+                row["id"],
+                row["first_name"],
+                row["last_name"],
+                row["email"],
+                row["bio"],
+                row["username"],
+                row["password"],
+                row["profile_image_url"],
+                row["created_on"],
+                row["active"],
+            )
+
             comment.post = post.__dict__
+            comment.user = user.__dict__
 
             comments.append(comment.__dict__)
 
@@ -89,10 +115,21 @@ def get_single_comment(id):
             p.publication_date,
             p.image_url,
             p.content,
-            p.approved
+            p.approved,
+            u.first_name,
+            u.last_name,
+            u.email,
+            u.bio,
+            u.username,
+            u.password,
+            u.profile_image_url,
+            u.created_on,
+            u.active
         FROM comments c
         JOIN Posts p
             ON p.id = c.post_id
+        JOIN Users u
+            On u.id = c.author_id
         WHERE c.id = ?
         """,
             (id,),
@@ -117,7 +154,21 @@ def get_single_comment(id):
             data["approved"],
         )
 
+        user = User(
+            data["id"],
+            data["first_name"],
+            data["last_name"],
+            data["email"],
+            data["bio"],
+            data["username"],
+            data["password"],
+            data["profile_image_url"],
+            data["created_on"],
+            data["active"],
+        )
+
         comment.post = post.__dict__
+        comment.user = user.__dict__
 
         return json.dumps(comment.__dict__)
 
