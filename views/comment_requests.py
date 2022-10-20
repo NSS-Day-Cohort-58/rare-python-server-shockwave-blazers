@@ -1,6 +1,7 @@
 import sqlite3
 import json
 from models import Comment
+from models import Post
 
 
 def get_all_comments():
@@ -16,10 +17,17 @@ def get_all_comments():
             """
         SELECT
             c.id,
-            c.author_id
-            c.post_id
-            c.content
+            c.author_id,
+            c.post_id,
+            c.content,
+            p.title title,
+            p.publication_date publication_date,
+            p.image_url image_url,
+            p.content content,
+            p.approved approved
         FROM comments c
+        JOIN Posts p
+            ON p.id = p.post_id
         """
         )
 
@@ -40,10 +48,21 @@ def get_all_comments():
                 row["id"], row["author_id"], row["post_id"], row["content"]
             )
 
+            post = Post(
+                row["id"],
+                row["title"],
+                row["publication_date"],
+                row["image_url"],
+                row["content"],
+                row["approved"],
+            )
+
+            comment.post = post.__dict__
+
             comments.append(comment.__dict__)
 
-    # Use `json` package to properly serialize list as JSON
-    return json.dumps(comments)
+        # Use `json` package to properly serialize list as JSON
+        return json.dumps(comments)
 
 
 def get_single_comment(id):
@@ -57,10 +76,17 @@ def get_single_comment(id):
             """
         SELECT
             c.id,
-            c.author_id
-            c.post_id
-            c.content
+            c.author_id,
+            c.post_id,
+            c.content,
+            p.title title,
+            p.publication_date publication_date,
+            p.image_url image_url,
+            p.content content,
+            p.approved approved
         FROM comments c
+        JOIN Posts p
+            ON p.id = p.post_id
         WHERE c.id = ?
         """,
             (id,),
@@ -73,6 +99,17 @@ def get_single_comment(id):
         comment = Comment(
             data["id"], data["author_id"], data["post_id"], data["content"]
         )
+        
+        post = Post(
+                data["id"],
+                data["title"],
+                data["publication_date"],
+                data["image_url"],
+                data["content"],
+                data["approved"],
+            )
+        
+        comment.post = post.__dict__
 
         return json.dumps(comment.__dict__)
 
