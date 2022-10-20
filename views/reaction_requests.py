@@ -9,8 +9,8 @@ def get_all_reactions():
         db_cursor.execute("""
         SELECT
             r.id,
-            r.emoji,
-        FROM Reaction r
+            r.emoji
+        FROM Reactions r
         """)
         reactions = []
 
