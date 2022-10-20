@@ -20,14 +20,16 @@ def get_all_comments():
             c.author_id,
             c.post_id,
             c.content,
-            p.title title,
-            p.publication_date publication_date,
-            p.image_url image_url,
-            p.content content,
-            p.approved approved
+            p.user_id,
+            p.category_id,
+            p.title,
+            p.publication_date,
+            p.image_url,
+            p.content,
+            p.approved
         FROM comments c
         JOIN Posts p
-            ON p.id = p.post_id
+            ON p.id = c.post_id
         """
         )
 
@@ -50,6 +52,8 @@ def get_all_comments():
 
             post = Post(
                 row["id"],
+                row["user_id"],
+                row["category_id"],
                 row["title"],
                 row["publication_date"],
                 row["image_url"],
@@ -79,14 +83,16 @@ def get_single_comment(id):
             c.author_id,
             c.post_id,
             c.content,
-            p.title title,
-            p.publication_date publication_date,
-            p.image_url image_url,
-            p.content content,
-            p.approved approved
+            p.user_id,
+            p.category_id,
+            p.title,
+            p.publication_date,
+            p.image_url,
+            p.content,
+            p.approved
         FROM comments c
         JOIN Posts p
-            ON p.id = p.post_id
+            ON p.id = c.post_id
         WHERE c.id = ?
         """,
             (id,),
@@ -99,16 +105,18 @@ def get_single_comment(id):
         comment = Comment(
             data["id"], data["author_id"], data["post_id"], data["content"]
         )
-        
+
         post = Post(
-                data["id"],
-                data["title"],
-                data["publication_date"],
-                data["image_url"],
-                data["content"],
-                data["approved"],
-            )
-        
+            data["id"],
+            data["user_id"],
+            data["category_id"],
+            data["title"],
+            data["publication_date"],
+            data["image_url"],
+            data["content"],
+            data["approved"],
+        )
+
         comment.post = post.__dict__
 
         return json.dumps(comment.__dict__)
