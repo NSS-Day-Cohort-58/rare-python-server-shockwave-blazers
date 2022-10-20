@@ -2,6 +2,7 @@ import sqlite3
 import json
 from models import Reaction
 
+
 def get_all_reactions():
     with sqlite3.connect("./rare.sqlite3") as conn:
         conn.row_factory = sqlite3.Row
@@ -10,7 +11,7 @@ def get_all_reactions():
         SELECT
             r.id,
             r.emoji
-        FROM Reactions r
+        FROM Reaction r
         """)
         reactions = []
 
@@ -22,3 +23,27 @@ def get_all_reactions():
             reactions.append(reaction.__dict__)
 
         return json.dumps(reactions)
+
+
+def get_single_reaction(id):
+    with sqlite3.connect("./rare.sqlite3") as conn:
+        conn.row_factory = sqlite3.Row
+        db_cursor = conn.cursor()
+
+        # Use a ? parameter to inject a variable's value
+        # into the SQL statement.
+        db_cursor.execute("""
+        SELECT
+            r.id,
+            r.emoji
+        FROM Reaction r
+        WHERE r.id = ?
+        """, (id, ))
+
+        # Load the single result into memory
+        data = db_cursor.fetchone()
+
+        # Create an post instance from the current row
+        reaction = Reaction(data['id'], data['emoji'])
+
+        return reaction.__dict__

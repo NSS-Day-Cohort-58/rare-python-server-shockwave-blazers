@@ -2,6 +2,8 @@ import sqlite3
 import json
 from datetime import datetime
 
+from models.user import User
+
 def login_user(user):
     """Checks for the user in the database
 
@@ -69,3 +71,4 @@ def create_user(user):
             'token': id,
             'valid': True
         })
+
