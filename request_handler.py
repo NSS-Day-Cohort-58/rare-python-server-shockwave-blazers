@@ -1,26 +1,11 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
-from views.categories_requests import (
-    create_category,
-    delete_category,
-    get_all_categories,
-    get_single_category,
-    update_category,
-)
-from views.post_requests import (
-    create_post,
-    delete_post,
-    get_all_posts,
-    get_single_post,
-    update_post,
-)
-from views.reaction_requests import get_all_reactions
-from views.subscriptions_requests import (
-    delete_subscription,
-    get_all_subscriptions,
-    get_single_subscription,
-    update_subscription,
-)
+from views.categories_requests import create_category, delete_category, get_all_categories, get_single_category, update_category
+from views.comment_requests import get_all_comments, get_single_comment
+from views.post_requests import create_post, delete_post, get_all_posts, get_single_post, update_post
+from views.reaction_requests import get_all_reactions, get_single_reaction
+from views.subscriptions_requests import delete_subscription, get_all_subscriptions, get_single_subscription, update_subscription
+from views.tags_requests import get_all_tags, get_single_tag
 
 from views.user import create_user, login_user
 
@@ -100,10 +85,31 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         elif resource == "reactions":
             if id is not None:
-                response = ""
+                response = get_single_reaction(id)
 
             else:
                 response = get_all_reactions()
+
+        elif resource == "tags":
+            if id is not None:
+                response = get_single_tag(id)
+
+            else:
+                response = get_all_tags()
+
+        elif resource == "users":
+            if id is not None:
+                response = get_single_user(id)
+
+            else:
+                response = get_all_users()
+
+        elif resource == "comments":
+            if id is not None:
+                response = get_single_comment(id)
+
+            else:
+                response = get_all_comments()
 
         self.wfile.write(response.encode())
 
@@ -121,16 +127,18 @@ class HandleRequests(BaseHTTPRequestHandler):
         if resource == "register":
             response = create_user(post_body)
 
-        self.wfile.write(response.encode())
-
         if resource == "posts":
             new_thing = create_post(post_body)
 
         if resource == "category":
             new_thing = create_category(post_body)
+        
+        self.wfile.write(response.encode())
+
+        
 
         # Encode the new thing and send in response
-        self.wfile.write(json.dumps(new_thing).encode())
+       
 
     def do_PUT(self):
         """Handles PUT requests to the server"""
