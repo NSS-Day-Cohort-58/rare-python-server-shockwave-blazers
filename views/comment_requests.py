@@ -1,6 +1,8 @@
 import sqlite3
 import json
 from models import Comment
+from models import Post
+from models import User
 
 
 def get_all_comments():
@@ -16,10 +18,30 @@ def get_all_comments():
             """
         SELECT
             c.id,
-            c.author_id
-            c.post_id
-            c.content
+            c.author_id,
+            c.post_id,
+            c.content,
+            p.user_id,
+            p.category_id,
+            p.title,
+            p.publication_date,
+            p.image_url,
+            p.content,
+            p.approved,
+            u.first_name,
+            u.last_name,
+            u.email,
+            u.bio,
+            u.username,
+            u.password,
+            u.profile_image_url,
+            u.created_on,
+            u.active
         FROM comments c
+        JOIN Posts p
+            ON p.id = c.post_id
+        JOIN Users u
+            On u.id = c.author_id
         """
         )
 
@@ -40,10 +62,37 @@ def get_all_comments():
                 row["id"], row["author_id"], row["post_id"], row["content"]
             )
 
+            post = Post(
+                row["id"],
+                row["user_id"],
+                row["category_id"],
+                row["title"],
+                row["publication_date"],
+                row["image_url"],
+                row["content"],
+                row["approved"],
+            )
+
+            user = User(
+                row["id"],
+                row["first_name"],
+                row["last_name"],
+                row["email"],
+                row["bio"],
+                row["username"],
+                row["password"],
+                row["profile_image_url"],
+                row["created_on"],
+                row["active"],
+            )
+
+            comment.post = post.__dict__
+            comment.user = user.__dict__
+
             comments.append(comment.__dict__)
 
-    # Use `json` package to properly serialize list as JSON
-    return json.dumps(comments)
+        # Use `json` package to properly serialize list as JSON
+        return json.dumps(comments)
 
 
 def get_single_comment(id):
@@ -57,10 +106,30 @@ def get_single_comment(id):
             """
         SELECT
             c.id,
-            c.author_id
-            c.post_id
-            c.content
+            c.author_id,
+            c.post_id,
+            c.content,
+            p.user_id,
+            p.category_id,
+            p.title,
+            p.publication_date,
+            p.image_url,
+            p.content,
+            p.approved,
+            u.first_name,
+            u.last_name,
+            u.email,
+            u.bio,
+            u.username,
+            u.password,
+            u.profile_image_url,
+            u.created_on,
+            u.active
         FROM comments c
+        JOIN Posts p
+            ON p.id = c.post_id
+        JOIN Users u
+            On u.id = c.author_id
         WHERE c.id = ?
         """,
             (id,),
@@ -73,6 +142,33 @@ def get_single_comment(id):
         comment = Comment(
             data["id"], data["author_id"], data["post_id"], data["content"]
         )
+
+        post = Post(
+            data["id"],
+            data["user_id"],
+            data["category_id"],
+            data["title"],
+            data["publication_date"],
+            data["image_url"],
+            data["content"],
+            data["approved"],
+        )
+
+        user = User(
+            data["id"],
+            data["first_name"],
+            data["last_name"],
+            data["email"],
+            data["bio"],
+            data["username"],
+            data["password"],
+            data["profile_image_url"],
+            data["created_on"],
+            data["active"],
+        )
+
+        comment.post = post.__dict__
+        comment.user = user.__dict__
 
         return json.dumps(comment.__dict__)
 
