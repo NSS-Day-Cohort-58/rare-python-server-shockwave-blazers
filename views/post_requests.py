@@ -1,7 +1,7 @@
 import sqlite3
 import json
 
-from models.post import Post
+from models import Post, Category, Tag, User
 
 
 def get_all_posts():
@@ -14,7 +14,7 @@ def get_all_posts():
 
         # Write the SQL query to get the information you want
         db_cursor.execute(
-            """
+        """
         SELECT
             p.id,
             p.user_id,
@@ -23,8 +23,32 @@ def get_all_posts():
             p.publication_date ,
             p.image_url ,
             p.content ,
-            p.approved
+            p.approved,
+            c.label,
+            u.first_name,
+            u.last_name,
+            u.email,
+            u.bio,
+            u.username,
+            u.password,
+            u.profile_image_url,
+            u.created_on,
+            u.active,
+            r.emoji,
+            t.label tag_label
         FROM Posts p
+        JOIN Categories c
+            ON c.id = p.category_id
+        JOIN Users u
+            ON u.id = p.user_id
+        JOIN PostReactions pr
+            ON p.id = pr.post_id
+        JOIN Reactions r
+            ON pr.reaction_id = r.id
+        JOIN PostTags pt
+            ON p.id = pt.post_id
+        JOIN Tags t
+            ON pt.tag_id = t.id
         """
         )
 
@@ -48,6 +72,30 @@ def get_all_posts():
                 row["content"],
                 row["approved"],
             )
+            user = User(
+                row["user_id"],
+                row["first_name"],
+                row["last_name"],
+                row["email"],
+                row["bio"],
+                row["username"],
+                row["password"],
+                row["profile_image_url"],
+                row["created_on"],
+                row["active"],
+            )
+            category = Category(
+                row["category_id"],
+                row["label"]
+            )
+            tag = Tag(
+                row["tag_id"],
+                row["label"]
+            )
+            
+            post.user = user.__dict__
+            post.category = category.__dict__
+            post.tag = tag.__dict__
 
             # Add the dictionary representation of the post to the list
             posts.append(post.__dict__)
@@ -73,8 +121,32 @@ def get_single_post(id):
             p.publication_date ,
             p.image_url ,
             p.content ,
-            p.approved
+            p.approved,
+            c.label,
+            u.first_name,
+            u.last_name,
+            u.email,
+            u.bio,
+            u.username,
+            u.password,
+            u.profile_image_url,
+            u.created_on,
+            u.active,
+            r.emoji,
+            t.label tag_label
         FROM Posts p
+        JOIN Categories c
+            ON c.id = p.category_id
+        JOIN Users u
+            ON u.id = p.user_id
+        JOIN PostReactions pr
+            ON p.id = pr.post_id
+        JOIN Reactions r
+            ON pr.reaction_id = r.id
+        JOIN PostTags pt
+            ON p.id = pt.post_id
+        JOIN Tags t
+            ON pt.tag_id = t.id
         WHERE p.id = ?
         """,
             (id,),
@@ -94,6 +166,31 @@ def get_single_post(id):
             data["content"],
             data["approved"],
         )
+        user = User(
+            data["user_id"],
+            data["first_name"],
+            data["last_name"],
+            data["email"],
+            data["bio"],
+            data["username"],
+            data["password"],
+            data["profile_image_url"],
+            data["created_on"],
+            data["active"],
+        )
+        category = Category(
+            data["category_id"],
+            data["label"]
+            )
+        tag = Tag(
+            data["tag_id"],
+            data["label"]
+        )
+        
+        post.user = user.__dict__
+        post.category = category.__dict__
+        post.tag = tag.__dict__
+
 
         return json.dumps(post.__dict__)
 
