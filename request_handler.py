@@ -7,7 +7,7 @@ from views.reaction_requests import get_all_reactions, get_single_reaction
 from views.subscriptions_requests import delete_subscription, get_all_subscriptions, get_single_subscription, update_subscription
 from views.tags_requests import get_all_tags, get_single_tag
 
-from views.user import create_user, login_user
+from views.user import create_user, login_user, get_single_user,get_all_user
 
 
 class HandleRequests(BaseHTTPRequestHandler):
@@ -103,7 +103,7 @@ class HandleRequests(BaseHTTPRequestHandler):
                 response = get_single_user(id)
 
             else:
-                response = get_all_users()
+                response = get_all_user()
 
         elif resource == "comments":
             if id is not None:

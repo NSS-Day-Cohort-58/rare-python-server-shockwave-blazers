@@ -142,6 +142,7 @@ INSERT INTO `Categories` VALUES(null, "Current Events");
             u.created_on,
             u.active,
             r.emoji,
+            t.id tag_id,
             t.label tag_label
         FROM Posts p
         JOIN Categories c
@@ -156,5 +157,5 @@ INSERT INTO `Categories` VALUES(null, "Current Events");
             ON p.id = pt.post_id
         JOIN Tags t
             ON pt.tag_id = t.id
-
+          WHERE p.id = 1
 

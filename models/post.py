@@ -12,3 +12,5 @@ class Post():
         self.approved = approved
         self.user = None
         self.category = None
+        self.tag = None
+        self.reaction = None
