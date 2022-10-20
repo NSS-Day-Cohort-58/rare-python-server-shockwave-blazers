@@ -1,7 +1,7 @@
 import sqlite3
 import json
 
-from models import Post, Category, Tag, User
+from models import Post, Category, Tag, User,Reaction
 
 
 def get_all_posts():
@@ -34,7 +34,9 @@ def get_all_posts():
             u.profile_image_url,
             u.created_on,
             u.active,
+            r.id reaction_id,
             r.emoji,
+            t.id tag_id,
             t.label tag_label
         FROM Posts p
         JOIN Categories c
@@ -90,12 +92,16 @@ def get_all_posts():
             )
             tag = Tag(
                 row["tag_id"],
-                row["label"]
+                row["tag_label"]
             )
-            
+            reaction = Reaction(
+                row ["reaction_id"],
+                row ["emoji"]
+            )
             post.user = user.__dict__
             post.category = category.__dict__
             post.tag = tag.__dict__
+            post.reaction= reaction.__dict__
 
             # Add the dictionary representation of the post to the list
             posts.append(post.__dict__)
