@@ -89,8 +89,11 @@ INSERT INTO `Users` VALUES(null, "Ricky", "Bobby", "rbob@wonderbread.com", "If y
 
 INSERT INTO `Subscriptions` VALUES(null, 1, 2, 2022);
 INSERT INTO `Subscriptions` VALUES(null, 2, 2, 2020);
+INSERT INTO `Subscriptions` VALUES(null, 2, 1, 2021);
 
 INSERT INTO `Posts` VALUES(null, 1, 2, "Test", 2022, null, "hello world", 1);
+
+INSERT INTO `Posts` VALUES(null, 2, 4, "Test", 2022, null, "yoooooo", 1);
 
 INSERT INTO `Comments` VALUES(null, 1, 2, "Test");
 
