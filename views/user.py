@@ -37,7 +37,7 @@ def login_user(user):
                 'valid': False
             }
 
-        return json.dumps(response)
+        return response
 
 
 def create_user(user):
