@@ -242,7 +242,7 @@ def delete_post(id):
 
         db_cursor.execute(
             """
-        DELETE FROM Post
+        DELETE FROM Posts
         WHERE id = ?
         """,
             (id,),
