@@ -177,7 +177,7 @@ class HandleRequests(BaseHTTPRequestHandler):
         self._set_headers(204)
 
         # Parse the URL
-        (resource, id) = self.parse_url(self.path)
+        (resource, id) = self.parse_url()
 
         # Delete a single post from the list
         if resource == "posts":
