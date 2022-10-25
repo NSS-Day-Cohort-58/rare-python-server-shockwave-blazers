@@ -138,7 +138,9 @@ def get_single_post(id):
             u.profile_image_url,
             u.created_on,
             u.active,
+            r.id reaction_id,
             r.emoji,
+            t.id tag_id,
             t.label tag_label
         FROM Posts p
         JOIN Categories c
@@ -192,10 +194,14 @@ def get_single_post(id):
             data["tag_id"],
             data["label"]
         )
-        
+        reaction = Reaction(
+            data["reaction_id"],
+            data["emoji"]
+            )
         post.user = user.__dict__
         post.category = category.__dict__
         post.tag = tag.__dict__
+        post.reaction = reaction.__dict__
 
 
         return json.dumps(post.__dict__)
