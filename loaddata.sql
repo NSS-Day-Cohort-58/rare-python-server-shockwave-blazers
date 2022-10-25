@@ -88,8 +88,7 @@ INSERT INTO `Users` VALUES(null, "Ricky", "Bobby", "rbob@wonderbread.com", "If y
 
 
 INSERT INTO `Subscriptions` VALUES(null, 1, 2, 2022);
-INSERT INTO `Subscriptions` VALUES(null, 2, 2, 2020);
-INSERT INTO `Subscriptions` VALUES(null, 2, 1, 2021);
+INSERT INTO `Subscriptions` VALUES(null, 2, 1, 2020);
 
 INSERT INTO `Posts` VALUES(null, 1, 2, "Test", 2022, null, "hello world", 1);
 
@@ -161,4 +160,48 @@ INSERT INTO `Categories` VALUES(null, "Current Events");
         JOIN Tags t
             ON pt.tag_id = t.id
           WHERE p.id = 1
+
+        SELECT
+            s.id,
+            s.follower_id ,
+            s.author_id,
+            s.created_on,
+            u1.first_name follower_first_name,
+            u1.last_name follower_last_name,
+            u1.email follower_email,
+            u1.bio follower_bio,
+            u1.username follower_username,
+            u1.password follower_password,
+            u1.profile_image_url follower_profile_image_url,
+            u1.created_on follower_created_on,
+            u1.active follower_active,
+            u2.first_name author_first_name,
+            u2.last_name author_last_name,
+            u2.email author_email,
+            u2.bio author_bio,
+            u2.username author_username,
+            u2.password author_password,
+            u2.profile_image_url author_profile_image_url,
+            u2.created_on author_created_on,
+            u2.active author_active,
+            p.user_id,
+            p.category_id ,
+            p.title ,
+            p.publication_date ,
+            p.image_url ,
+            p.content ,
+            p.approved
+        FROM Subscriptions s
+        JOIN Users u1
+            ON u1.id = s.follower_id
+        JOIN Users u2
+            ON u2.id = s.author_id
+        JOIN Posts p
+            ON p.user_id = s.author_id
+
+
+
+
+
+
 
