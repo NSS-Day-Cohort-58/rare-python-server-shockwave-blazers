@@ -130,7 +130,7 @@ class HandleRequests(BaseHTTPRequestHandler):
         if resource == "posts":
             response = create_post(post_body)
 
-        if resource == "category":
+        if resource == "categories":
             response = create_category(post_body)
         
         if resource == "tags":
